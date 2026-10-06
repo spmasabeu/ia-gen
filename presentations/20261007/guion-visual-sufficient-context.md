@@ -6,7 +6,8 @@
 **Duración objetivo:** 7 min 30 s, con pausas incluidas; validar mediante ensayo. Deja 2 min 30 s de margen respecto del tope de 10 minutos.  
 **Estilo:** charla cercana, una pequeña experiencia con el público, una metáfora recurrente y evidencia fácil de leer.  
 **Mensaje central:** encontrar textos sobre un tema no garantiza tener la información para responder; la fiabilidad también exige reconocer cuándo falta evidencia.
-
+SUFFICIENT CONTEXT: A NEW LENS ON RETRIEVAL
+AUGMENTED GENERATION SYSTEMS
 ## Recorrido de ocho diapositivas
 
 Los textos entre comillas son propuestas para decir, no citas del paper. El ejemplo de Ana es inventado para enseñar la distinción. Los tiempos son un presupuesto para la exposición, no una duración medida de lectura.
