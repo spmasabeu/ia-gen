@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>¿No encontró lo necesario, o no supo aprovecharlos? · Sufficient Context</title><link rel="stylesheet" href="deck.css"><script src="deck.js" defer></script></head>
+<body><main aria-label="Presentación: Sufficient Context (deck v3)">
+
+<!-- ===== Portada ===== -->
+<section class="slide hero active" data-logical="1" data-build="1" data-builds="1" data-seconds="15">
+ <p class="meta">00 / APERTURA</p>
+ <p class="kicker">cuando un modelo responde mal con los documentos en la mano…</p>
+ <h1>¿No encontró lo necesario,<br>o no supo aprovecharlos?</h1>
+ <p class="sub">Sufficient Context: A New Lens on RAG Systems · ICLR 2025</p>
+ <p class="byline">Sebastián Palma Masabeu · IA Generativa · 7 de octubre de 2026</p>
+ <p class="page">1/16</p>
+ <aside class="notes">Cuando un modelo responde mal incluso con los documentos en la mano, hay dos sospechosos posibles. Esa es la única pregunta de hoy — y un paper de ICLR 2025 construyó toda una lente para responderla. Al final de la charla la vamos a contestar.</aside>
+</section>
+
+<!-- ===== Analogía: el ensayo (3 builds) ===== -->
+<section class="slide build-1" data-logical="2" data-build="1" data-builds="3" data-seconds="40">
+ <p class="meta">01 / MOTIVACIÓN</p>
+ <div class="ensayo" style="position:absolute;left:64px;right:64px;top:150px">
+  <div class="zona card b1">
+   <svg class="icono" width="46" height="40" viewBox="0 0 46 40" aria-hidden="true"><path d="M23 3c-8 0-14 5-15 11-4 1-6 4-6 8 0 5 4 9 9 9h24c5 0 9-4 9-9 0-4-2-7-6-8C37 8 31 3 23 3Z" fill="none" stroke="#9aa4b2" stroke-width="2.4"/><circle cx="16" cy="18" r="2.2" fill="#22d3ee"/><circle cx="26" cy="13" r="2.2" fill="#22d3ee"/><circle cx="31" cy="21" r="2.2" fill="#22d3ee"/><path d="M16 18l10-5m0 0 5 8m-15-3 15 3" stroke="#22d3ee" stroke-width="1.4"/></svg>
+   <h3>MEMORIA PROPIA</h3><p class="sub mono">lo que ya sabemos</p>
+  </div>
+  <div class="flecha b2 keep">→</div>
+  <div class="zona b2">
+   <div class="fuentes-grid">
+    <div class="celda"><svg class="mini" width="170" height="96" viewBox="0 0 170 96" aria-hidden="true"><rect x="0.5" y="0.5" width="169" height="95" rx="6" fill="#c7c3bb" stroke="#2a313c"/><rect x="6" y="6" width="158" height="14" rx="2" fill="#1a2f8f"/><rect x="10" y="10" width="58" height="6" rx="2" fill="#e8ecf1"/><rect x="150" y="9" width="8" height="8" fill="#c7c3bb" stroke="#8a8578"/><rect x="6" y="24" width="158" height="9" fill="#b5b1a8"/><rect x="6" y="37" width="42" height="53" fill="#8f8a80"/><rect x="54" y="37" width="48" height="30" fill="#7a99b8"/><rect x="108" y="39" width="54" height="4" fill="#6f6a61"/><rect x="108" y="47" width="54" height="4" fill="#6f6a61"/><rect x="108" y="55" width="54" height="4" fill="#6f6a61"/><rect x="108" y="63" width="42" height="4" fill="#6f6a61"/><rect x="54" y="73" width="108" height="4" fill="#6f6a61"/><rect x="54" y="81" width="108" height="4" fill="#6f6a61"/></svg><span class="chip">Encarta</span></div>
+    <div class="celda"><svg class="mini" width="170" height="96" viewBox="0 0 170 96" aria-hidden="true"><rect x="0.5" y="0.5" width="169" height="95" rx="6" fill="#f2f4f7" stroke="#2a313c"/><text x="12" y="28" font-family="Georgia,serif" font-size="24" fill="#202122">W</text><rect x="42" y="14" width="86" height="7" rx="2" fill="#202122"/><rect x="12" y="36" width="146" height="1.5" fill="#a2a9b1"/><rect x="110" y="44" width="48" height="44" fill="#dde3ea" stroke="#b8c0cc"/><rect x="12" y="46" width="90" height="4" fill="#54595d"/><rect x="12" y="54" width="90" height="4" fill="#8a8f98"/><rect x="12" y="62" width="90" height="4" fill="#8a8f98"/><rect x="12" y="70" width="90" height="4" fill="#8a8f98"/><rect x="12" y="78" width="74" height="4" fill="#8a8f98"/></svg><span class="chip">Wikipedia</span></div>
+    <div class="celda"><span class="chip">Stack Overflow</span><svg class="mini" width="170" height="96" viewBox="0 0 170 96" aria-hidden="true"><rect x="0.5" y="0.5" width="169" height="95" rx="6" fill="#ffffff" stroke="#2a313c"/><rect x="1" y="1" width="168" height="12" rx="5" fill="#3b4045"/><rect x="1" y="13" width="168" height="3" fill="#f48024"/><rect x="34" y="24" width="118" height="6" rx="2" fill="#3f6fc4"/><path d="M16 38 l7 8 h-14 z" fill="#9aa4b2"/><rect x="12" y="50" width="8" height="5" fill="#6a737c"/><path d="M16 66 l-7 -8 h14 z" fill="#9aa4b2"/><rect x="34" y="38" width="118" height="4" fill="#9aa4b2"/><rect x="34" y="46" width="118" height="4" fill="#9aa4b2"/><rect x="34" y="54" width="96" height="4" fill="#9aa4b2"/><path d="M14 78 l5 6 9 -11" fill="none" stroke="#34d399" stroke-width="3"/><rect x="34" y="70" width="118" height="4" fill="#6a737c"/><rect x="34" y="78" width="118" height="4" fill="#9aa4b2"/></svg></div>
+    <div class="celda"><span class="chip">Papers</span><svg class="mini" width="170" height="96" viewBox="0 0 170 96" aria-hidden="true"><rect x="0.5" y="0.5" width="169" height="95" rx="6" fill="#fbfbf8" stroke="#2a313c"/><rect x="1" y="1" width="5" height="94" fill="#b31b1b"/><rect x="48" y="10" width="86" height="5" rx="2" fill="#2b2b2b"/><rect x="58" y="19" width="66" height="4" rx="2" fill="#2b2b2b"/><rect x="64" y="28" width="54" height="3" fill="#7a7f87"/><rect x="16" y="40" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="47" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="54" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="61" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="68" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="75" width="52" height="3" fill="#9aa0a8"/><rect x="92" y="40" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="47" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="54" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="61" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="68" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="75" width="48" height="3" fill="#9aa0a8"/></svg></div>
+   </div>
+   <p class="fuentes-label">contexto externo</p>
+  </div>
+  <div class="flecha b3">→</div>
+  <div class="zona card destacada b3">
+   <svg class="icono" width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="7" y="4" width="26" height="32" rx="3" fill="none" stroke="#22d3ee" stroke-width="2.4"/><path d="M13 12h14M13 18h14M13 24h14M13 30h9" stroke="#22d3ee" stroke-width="2"/></svg>
+   <h3>ENSAYO</h3><p class="sub mono">mejor respuesta, mismo cerebro</p>
+  </div>
+ </div>
+ <p class="page">2/16</p>
+ <aside class="notes">Puente: «Antes de hablar de modelos, hablemos de nosotros». — Si nos piden un ensayo sobre un tópico, partimos de nuestro banco de memoria. Pero muchas veces ese conocimiento no alcanza para responder de la forma más plausible. ¿Qué hacíamos? Encarta, Wikipedia, Stack Overflow, papers: incorporábamos contexto externo para responder mejor. Y noten algo: nadie reentrenó su cerebro para escribir ese ensayo. A los modelos de lenguaje les pasa exactamente lo mismo: fueron entrenados con un volumen de datos que les da capacidades, pero muchas veces no tienen el contexto suficiente para una respuesta correcta y precisa.</aside>
+</section>
+<section class="slide build-2" data-logical="2" data-build="2" data-builds="3" data-seconds="40">
+ <p class="meta">01 / MOTIVACIÓN</p>
+ <div class="ensayo" style="position:absolute;left:64px;right:64px;top:150px">
+  <div class="zona card b1">
+   <svg class="icono" width="46" height="40" viewBox="0 0 46 40" aria-hidden="true"><path d="M23 3c-8 0-14 5-15 11-4 1-6 4-6 8 0 5 4 9 9 9h24c5 0 9-4 9-9 0-4-2-7-6-8C37 8 31 3 23 3Z" fill="none" stroke="#9aa4b2" stroke-width="2.4"/><circle cx="16" cy="18" r="2.2" fill="#22d3ee"/><circle cx="26" cy="13" r="2.2" fill="#22d3ee"/><circle cx="31" cy="21" r="2.2" fill="#22d3ee"/><path d="M16 18l10-5m0 0 5 8m-15-3 15 3" stroke="#22d3ee" stroke-width="1.4"/></svg>
+   <h3>MEMORIA PROPIA</h3><p class="sub mono">lo que ya sabemos</p>
+  </div>
+  <div class="flecha b2 keep">→</div>
+  <div class="zona b2">
+   <div class="fuentes-grid">
+    <div class="celda"><svg class="mini" width="170" height="96" viewBox="0 0 170 96" aria-hidden="true"><rect x="0.5" y="0.5" width="169" height="95" rx="6" fill="#c7c3bb" stroke="#2a313c"/><rect x="6" y="6" width="158" height="14" rx="2" fill="#1a2f8f"/><rect x="10" y="10" width="58" height="6" rx="2" fill="#e8ecf1"/><rect x="150" y="9" width="8" height="8" fill="#c7c3bb" stroke="#8a8578"/><rect x="6" y="24" width="158" height="9" fill="#b5b1a8"/><rect x="6" y="37" width="42" height="53" fill="#8f8a80"/><rect x="54" y="37" width="48" height="30" fill="#7a99b8"/><rect x="108" y="39" width="54" height="4" fill="#6f6a61"/><rect x="108" y="47" width="54" height="4" fill="#6f6a61"/><rect x="108" y="55" width="54" height="4" fill="#6f6a61"/><rect x="108" y="63" width="42" height="4" fill="#6f6a61"/><rect x="54" y="73" width="108" height="4" fill="#6f6a61"/><rect x="54" y="81" width="108" height="4" fill="#6f6a61"/></svg><span class="chip">Encarta</span></div>
+    <div class="celda"><svg class="mini" width="170" height="96" viewBox="0 0 170 96" aria-hidden="true"><rect x="0.5" y="0.5" width="169" height="95" rx="6" fill="#f2f4f7" stroke="#2a313c"/><text x="12" y="28" font-family="Georgia,serif" font-size="24" fill="#202122">W</text><rect x="42" y="14" width="86" height="7" rx="2" fill="#202122"/><rect x="12" y="36" width="146" height="1.5" fill="#a2a9b1"/><rect x="110" y="44" width="48" height="44" fill="#dde3ea" stroke="#b8c0cc"/><rect x="12" y="46" width="90" height="4" fill="#54595d"/><rect x="12" y="54" width="90" height="4" fill="#8a8f98"/><rect x="12" y="62" width="90" height="4" fill="#8a8f98"/><rect x="12" y="70" width="90" height="4" fill="#8a8f98"/><rect x="12" y="78" width="74" height="4" fill="#8a8f98"/></svg><span class="chip">Wikipedia</span></div>
+    <div class="celda"><span class="chip">Stack Overflow</span><svg class="mini" width="170" height="96" viewBox="0 0 170 96" aria-hidden="true"><rect x="0.5" y="0.5" width="169" height="95" rx="6" fill="#ffffff" stroke="#2a313c"/><rect x="1" y="1" width="168" height="12" rx="5" fill="#3b4045"/><rect x="1" y="13" width="168" height="3" fill="#f48024"/><rect x="34" y="24" width="118" height="6" rx="2" fill="#3f6fc4"/><path d="M16 38 l7 8 h-14 z" fill="#9aa4b2"/><rect x="12" y="50" width="8" height="5" fill="#6a737c"/><path d="M16 66 l-7 -8 h14 z" fill="#9aa4b2"/><rect x="34" y="38" width="118" height="4" fill="#9aa4b2"/><rect x="34" y="46" width="118" height="4" fill="#9aa4b2"/><rect x="34" y="54" width="96" height="4" fill="#9aa4b2"/><path d="M14 78 l5 6 9 -11" fill="none" stroke="#34d399" stroke-width="3"/><rect x="34" y="70" width="118" height="4" fill="#6a737c"/><rect x="34" y="78" width="118" height="4" fill="#9aa4b2"/></svg></div>
+    <div class="celda"><span class="chip">Papers</span><svg class="mini" width="170" height="96" viewBox="0 0 170 96" aria-hidden="true"><rect x="0.5" y="0.5" width="169" height="95" rx="6" fill="#fbfbf8" stroke="#2a313c"/><rect x="1" y="1" width="5" height="94" fill="#b31b1b"/><rect x="48" y="10" width="86" height="5" rx="2" fill="#2b2b2b"/><rect x="58" y="19" width="66" height="4" rx="2" fill="#2b2b2b"/><rect x="64" y="28" width="54" height="3" fill="#7a7f87"/><rect x="16" y="40" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="47" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="54" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="61" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="68" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="75" width="52" height="3" fill="#9aa0a8"/><rect x="92" y="40" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="47" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="54" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="61" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="68" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="75" width="48" height="3" fill="#9aa0a8"/></svg></div>
+   </div>
+   <p class="fuentes-label">contexto externo</p>
+  </div>
+  <div class="flecha b3">→</div>
+  <div class="zona card destacada b3">
+   <svg class="icono" width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="7" y="4" width="26" height="32" rx="3" fill="none" stroke="#22d3ee" stroke-width="2.4"/><path d="M13 12h14M13 18h14M13 24h14M13 30h9" stroke="#22d3ee" stroke-width="2"/></svg>
+   <h3>ENSAYO</h3><p class="sub mono">mejor respuesta, mismo cerebro</p>
+  </div>
+ </div>
+ <p class="page">2/16</p>
+ <aside class="notes"></aside>
+</section>
+<section class="slide build-3" data-logical="2" data-build="3" data-builds="3" data-seconds="40">
+ <p class="meta">01 / MOTIVACIÓN</p>
+ <div class="ensayo" style="position:absolute;left:64px;right:64px;top:150px">
+  <div class="zona card b1">
+   <svg class="icono" width="46" height="40" viewBox="0 0 46 40" aria-hidden="true"><path d="M23 3c-8 0-14 5-15 11-4 1-6 4-6 8 0 5 4 9 9 9h24c5 0 9-4 9-9 0-4-2-7-6-8C37 8 31 3 23 3Z" fill="none" stroke="#9aa4b2" stroke-width="2.4"/><circle cx="16" cy="18" r="2.2" fill="#22d3ee"/><circle cx="26" cy="13" r="2.2" fill="#22d3ee"/><circle cx="31" cy="21" r="2.2" fill="#22d3ee"/><path d="M16 18l10-5m0 0 5 8m-15-3 15 3" stroke="#22d3ee" stroke-width="1.4"/></svg>
+   <h3>MEMORIA PROPIA</h3><p class="sub mono">lo que ya sabemos</p>
+  </div>
+  <div class="flecha b2 keep">→</div>
+  <div class="zona b2">
+   <div class="fuentes-grid">
+    <div class="celda"><svg class="mini" width="170" height="96" viewBox="0 0 170 96" aria-hidden="true"><rect x="0.5" y="0.5" width="169" height="95" rx="6" fill="#c7c3bb" stroke="#2a313c"/><rect x="6" y="6" width="158" height="14" rx="2" fill="#1a2f8f"/><rect x="10" y="10" width="58" height="6" rx="2" fill="#e8ecf1"/><rect x="150" y="9" width="8" height="8" fill="#c7c3bb" stroke="#8a8578"/><rect x="6" y="24" width="158" height="9" fill="#b5b1a8"/><rect x="6" y="37" width="42" height="53" fill="#8f8a80"/><rect x="54" y="37" width="48" height="30" fill="#7a99b8"/><rect x="108" y="39" width="54" height="4" fill="#6f6a61"/><rect x="108" y="47" width="54" height="4" fill="#6f6a61"/><rect x="108" y="55" width="54" height="4" fill="#6f6a61"/><rect x="108" y="63" width="42" height="4" fill="#6f6a61"/><rect x="54" y="73" width="108" height="4" fill="#6f6a61"/><rect x="54" y="81" width="108" height="4" fill="#6f6a61"/></svg><span class="chip">Encarta</span></div>
+    <div class="celda"><svg class="mini" width="170" height="96" viewBox="0 0 170 96" aria-hidden="true"><rect x="0.5" y="0.5" width="169" height="95" rx="6" fill="#f2f4f7" stroke="#2a313c"/><text x="12" y="28" font-family="Georgia,serif" font-size="24" fill="#202122">W</text><rect x="42" y="14" width="86" height="7" rx="2" fill="#202122"/><rect x="12" y="36" width="146" height="1.5" fill="#a2a9b1"/><rect x="110" y="44" width="48" height="44" fill="#dde3ea" stroke="#b8c0cc"/><rect x="12" y="46" width="90" height="4" fill="#54595d"/><rect x="12" y="54" width="90" height="4" fill="#8a8f98"/><rect x="12" y="62" width="90" height="4" fill="#8a8f98"/><rect x="12" y="70" width="90" height="4" fill="#8a8f98"/><rect x="12" y="78" width="74" height="4" fill="#8a8f98"/></svg><span class="chip">Wikipedia</span></div>
+    <div class="celda"><span class="chip">Stack Overflow</span><svg class="mini" width="170" height="96" viewBox="0 0 170 96" aria-hidden="true"><rect x="0.5" y="0.5" width="169" height="95" rx="6" fill="#ffffff" stroke="#2a313c"/><rect x="1" y="1" width="168" height="12" rx="5" fill="#3b4045"/><rect x="1" y="13" width="168" height="3" fill="#f48024"/><rect x="34" y="24" width="118" height="6" rx="2" fill="#3f6fc4"/><path d="M16 38 l7 8 h-14 z" fill="#9aa4b2"/><rect x="12" y="50" width="8" height="5" fill="#6a737c"/><path d="M16 66 l-7 -8 h14 z" fill="#9aa4b2"/><rect x="34" y="38" width="118" height="4" fill="#9aa4b2"/><rect x="34" y="46" width="118" height="4" fill="#9aa4b2"/><rect x="34" y="54" width="96" height="4" fill="#9aa4b2"/><path d="M14 78 l5 6 9 -11" fill="none" stroke="#34d399" stroke-width="3"/><rect x="34" y="70" width="118" height="4" fill="#6a737c"/><rect x="34" y="78" width="118" height="4" fill="#9aa4b2"/></svg></div>
+    <div class="celda"><span class="chip">Papers</span><svg class="mini" width="170" height="96" viewBox="0 0 170 96" aria-hidden="true"><rect x="0.5" y="0.5" width="169" height="95" rx="6" fill="#fbfbf8" stroke="#2a313c"/><rect x="1" y="1" width="5" height="94" fill="#b31b1b"/><rect x="48" y="10" width="86" height="5" rx="2" fill="#2b2b2b"/><rect x="58" y="19" width="66" height="4" rx="2" fill="#2b2b2b"/><rect x="64" y="28" width="54" height="3" fill="#7a7f87"/><rect x="16" y="40" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="47" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="54" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="61" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="68" width="68" height="3" fill="#9aa0a8"/><rect x="16" y="75" width="52" height="3" fill="#9aa0a8"/><rect x="92" y="40" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="47" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="54" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="61" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="68" width="66" height="3" fill="#9aa0a8"/><rect x="92" y="75" width="48" height="3" fill="#9aa0a8"/></svg></div>
+   </div>
+   <p class="fuentes-label">contexto externo</p>
+  </div>
+  <div class="flecha b3">→</div>
+  <div class="zona card destacada b3">
+   <svg class="icono" width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="7" y="4" width="26" height="32" rx="3" fill="none" stroke="#22d3ee" stroke-width="2.4"/><path d="M13 12h14M13 18h14M13 24h14M13 30h9" stroke="#22d3ee" stroke-width="2"/></svg>
+   <h3>ENSAYO</h3><p class="sub mono">mejor respuesta, mismo cerebro</p>
+  </div>
+ </div>
+ <p class="page">2/16</p>
+ <aside class="notes"></aside>
+</section>
+
+<!-- ===== Qué es RAG ===== -->
+<section class="slide" data-logical="3" data-build="1" data-builds="1" data-seconds="40">
+ <p class="meta">01 / MOTIVACIÓN</p>
+ <h2>RAG: recuperar antes de generar</h2>
+ <div class="content">
+  <div class="pipeline">
+   <div class="nodo">pregunta</div><span class="flecha">→</span>
+   <div class="nodo">búsqueda</div><span class="flecha">→</span>
+   <div class="nodo">fragmentos</div><span class="flecha">→</span>
+   <div class="nodo hl">prompt enriquecido</div><span class="flecha">→</span>
+   <div class="nodo">respuesta</div>
+  </div>
+  <p class="destaque">ocurre en inferencia,<br>no en entrenamiento</p>
+ </div>
+ <p class="page">3/16</p>
+ <aside class="notes">Puente: «Esa solución humana tiene nombre en los modelos: RAG». — RAG significa Retrieval-Augmented Generation. Ante una pregunta, el sistema busca documentos o fragmentos relevantes, los pone dentro del prompt, y el modelo genera usando ese contexto. Punto clave: esto ocurre a nivel de inferencia; los pesos del modelo no cambian, no hay reentrenamiento. Existen muchas formas de implementar la recuperación — desde un buscador simple hasta pipelines con reranking, búsqueda iterativa o agentes — pero este paper no se casa con ninguna: lo que propone aplica a cualquier variante, porque mira solo el contexto que llega al modelo. El objeto de estudio de toda la charla es ese par: pregunta más contexto dentro del prompt. — Precisión si preguntan: en los experimentos del paper no hay búsqueda web en vivo ni chat conversacional; los benchmarks ya traen la pregunta y los pasajes recuperados (HotpotQA y Musique con sus fragmentos, FreshQA con el contenido de sus URLs de apoyo), recortados a un presupuesto de tokens y pasados por API dentro del prompt. El mecanismo que consiguió el contexto queda abstraído: por eso la lente aplica igual a un sistema con búsqueda en internet.</aside>
+</section>
+
+<!-- ===== Tres fallas ===== -->
+<section class="slide" data-logical="5" data-build="1" data-builds="1" data-seconds="30">
+ <p class="meta">02 / PROBLEMA</p>
+ <h2>RAG falla aun con documentos en la mano</h2>
+ <div class="content">
+  <div class="fallas">
+   <div class="card falla"><p class="num">1</p><p>Responden mal aun con evidencia recuperada</p>
+    <svg width="44" height="40" viewBox="0 0 44 40" aria-hidden="true"><path d="M22 4 41 36H3Z" fill="none" stroke="#f87171" stroke-width="2.4"/><path d="M22 15v10" stroke="#f87171" stroke-width="2.8"/><circle cx="22" cy="30" r="1.9" fill="#f87171"/></svg></div>
+   <div class="card falla"><p class="num">2</p><p>Se distraen con información no relacionada</p>
+    <svg width="52" height="40" viewBox="0 0 52 40" aria-hidden="true"><path d="M2 20q6-14 12 0t12 0 12 0 12 0" fill="none" stroke="#f87171" stroke-width="2.4"/><path d="M2 32q6-8 12 0t12 0 12 0 12 0" fill="none" stroke="#9aa4b2" stroke-width="1.8"/></svg></div>
+   <div class="card falla"><p class="num">3</p><p>No extraen bien la respuesta de textos largos</p>
+    <svg width="36" height="44" viewBox="0 0 36 44" aria-hidden="true"><rect x="4" y="2" width="28" height="40" rx="3" fill="none" stroke="#f87171" stroke-width="2.4"/><path d="M10 10h16M10 16h16M10 22h16M10 28h16M10 34h10" stroke="#9aa4b2" stroke-width="1.8"/></svg></div>
+  </div>
+ </div>
+ <p class="page">4/16</p>
+ <aside class="notes">Puente: «RAG suena a problema resuelto. No lo es». — La introducción del paper parte de tres comportamientos indeseados en sistemas RAG: responder incorrecto incluso con evidencia recuperada; distraerse con información no relacionada; y fallar al extraer respuestas desde fragmentos largos de texto. O sea: recuperar documentos no cierra el problema. Y acá nace la pregunta de diagnóstico: cuando falla, ¿no encontró lo necesario, o no supo aprovecharlos?</aside>
+</section>
+
+<!-- ===== Estado del arte ===== -->
+<section class="slide" data-logical="6" data-build="1" data-builds="1" data-seconds="25">
+ <p class="meta">02 / PROBLEMA</p>
+ <h2>"Relevante" no es "suficiente"</h2>
+ <div class="content" style="top:200px">
+  <div class="ejes">
+   <div class="card eje"><h3>CONTEXTO (IR)RELEVANTE</h3>
+    <div class="refs"><span class="chip">Easily Distracted (Shi 2023)</span><span class="chip">Knowledge Conflicts (Xie 2024)</span><span class="chip">Ret-Robust (Yoran 2024)</span><span class="chip">The Power of Noise (Cuconasu 2024)</span></div></div>
+   <div class="card eje"><h3>REDUCIR ALUCINACIONES</h3>
+    <div class="refs"><span class="chip">Self-RAG (Asai 2023)</span><span class="chip">Speculative RAG (Wang 2024)</span><span class="chip">"lost in the middle" (Liu 2024)</span></div></div>
+  </div>
+ </div>
+ <p class="hueco">hueco: ¿la evidencia permite construir la respuesta?</p>
+ <p class="page">5/16</p>
+ <aside class="notes">Puente: «¿Nadie había mirado esto antes? Casi». — El trabajo previo corre por dos ejes: robustez a contexto irrelevante — ruido, documentos contradictorios — y técnicas para reducir alucinaciones, como Self-RAG. Pero 'relevante' significaba cosas distintas en cada paper: desde 'habla del tema' hasta 'contiene la respuesta'. Nadie había definido con precisión la pregunta que importa: ¿esta evidencia permite construir la respuesta? Ese es el hueco que este paper llena. — Ejemplo didáctico de respaldo (propio, inspirado en §3.1) si hace falta aterrizar la diferencia: pregunto dónde nació Ana; un texto dice que Ana vive en Valparaíso y que su madre nació en Santiago — habla de ella y de ciudades, es RELEVANTE, pero no permite responder; otro texto dice 'Ana nació en Concepción' — ese sí es SUFICIENTE. No falta más texto en abstracto: falta un hecho específico. Esa diferencia es el corazón de la propuesta.</aside>
+</section>
+
+<!-- ===== Definición ===== -->
+<section class="slide" data-logical="7" data-build="1" data-builds="1" data-seconds="45">
+ <p class="meta">03 / PROPUESTA</p>
+ <h2>La definición de contexto suficiente</h2>
+ <div class="content definicion" style="top:216px">
+  <p class="expr1">q′ = (Q, C)</p>
+  <p class="expr2">suficiente ⟺ ∃ A′ plausible para Q dada C</p>
+  <div class="chips"><span class="chip">Q pregunta</span><span class="chip">C contexto</span><span class="chip">A′ respuesta plausible</span></div>
+ </div>
+ <p class="neqv">suficiente ≠ verdadero</p>
+ <p class="page">6/16</p>
+ <aside class="notes">Puente: «Primera contribución: ponerle matemática a la pregunta». — En un dataset, cada instancia trae pregunta Q, contexto C y respuesta de referencia A. Pero la definición trabaja solo con el par Q y C: hay contexto suficiente si y solo si existe una respuesta A-prima que sea plausible para Q dada la información de C. Dos cosas potentes aquí. Uno: no necesitamos conocer la respuesta oficial para evaluarlo — sirve en producción, donde no hay respuesta de referencia. Dos: suficiente no significa verdadero. Un documento equivocado puede permitir construir una respuesta perfectamente identificable. La suficiencia mide si se puede responder, no si el mundo está bien descrito. — Respaldo si preguntan por casos borde (remarks de §3.1): en multi-hop se permite encadenar hechos del contexto pero no inventar la conexión que falta; si la pregunta es ambigua, el contexto debe desambiguarla; si hay varias respuestas posibles, C debe permitir distinguir cuál corresponde.</aside>
+</section>
+
+<!-- ===== Autorater ===== -->
+<section class="slide" data-logical="9" data-build="1" data-builds="1" data-seconds="30">
+ <p class="meta">03 / PROPUESTA</p>
+ <h2>Un juez automático de suficiencia</h2>
+ <div class="content">
+  <div class="flujo">
+   <div class="nodo mono">(Q, C)</div><span class="flecha">→</span>
+   <div class="nodo juez mono">AUTORATER</div><span class="flecha">→</span>
+   <div class="nodo salida mono">suficiente / insuficiente</div>
+  </div>
+ </div>
+ <div class="tachada">
+  <div class="card">respuesta oficial A</div>
+  <p class="label">no la necesita</p>
+ </div>
+ <p class="page">7/16</p>
+ <aside class="notes">Puente: «Definir está bien. Pero ¿quién etiqueta miles de instancias?». — Etiquetar suficiencia a mano no escala. La segunda contribución es un autorater: otro modelo que actúa como evaluador — recibe pregunta y contexto, y clasifica: suficiente o insuficiente. La necesidad que cubre es doble: etiquetar datasets completos para el análisis que viene, y servir de señal en producción. Y de nuevo: no necesita la respuesta correcta oficial. ¿Pero podemos confiar en un modelo para esto?</aside>
+</section>
+
+<!-- ===== Validación 93% ===== -->
+<section class="slide" data-logical="10" data-build="1" data-builds="1" data-seconds="35">
+ <p class="meta">03 / PROPUESTA</p>
+ <h2>93% de acuerdo con humanos</h2>
+ <p class="submono mono">115 instancias etiquetadas a mano · PopQA · FreshQA · Natural Questions · EntityQuestions</p>
+ <div class="content validacion" style="top:212px">
+  <div><p class="giant">93%</p></div>
+  <table>
+   <tr><th>Método</th><th style="text-align:right">Exactitud</th><th class="center">¿Sin respuesta oficial?</th></tr>
+   <tr class="best"><td>Gemini 1.5 Pro (1-shot)</td><td class="num">93,0%</td><td class="center si">✓</td></tr>
+   <tr><td>FLAMe (PaLM 24B ajustado)</td><td class="num">87,8%</td><td class="center si">✓</td></tr>
+   <tr><td>Gemini 1.5 Pro (0-shot)</td><td class="num">87,0%</td><td class="center si">✓</td></tr>
+   <tr><td>TRUE-NLI (T5 11B)</td><td class="num">82,6%</td><td class="center no">✗</td></tr>
+   <tr><td>Coincidencia literal (Contains GT)</td><td class="num">80,9%</td><td class="center no">✗</td></tr>
+  </table>
+ </div>
+ <p class="page">8/16</p>
+ <aside class="notes">Puente: «La respuesta del paper: sí, y lo midieron así». — Armaron un conjunto difícil de 115 instancias desde PopQA, FreshQA, Natural Questions y EntityQuestions, etiquetadas por humanos, y compararon métodos. Gemini 1.5 Pro con un ejemplo en el prompt gana: 93% de exactitud. FLAMe, más barato, queda en 87,8. Y noten las dos últimas filas: los métodos que sí usan la respuesta oficial — verificar entailment o buscar la respuesta literal en el texto — rinden peor. El 93% es la exactitud del juez, no del sistema RAG completo.</aside>
+</section>
+
+<!-- ===== Figura 2 ===== -->
+<section class="slide" data-logical="11" data-build="1" data-builds="1" data-seconds="35">
+ <p class="meta">04 / EVIDENCIA</p>
+ <h2>¿Los benchmarks traen la evidencia?</h2>
+ <div class="content" style="top:178px">
+  <svg class="chart" width="1100" height="386" viewBox="0 0 1152 404" role="img" aria-label="Figura 2 recreada: porcentaje de instancias con contexto suficiente por dataset y presupuesto de tokens">
+   <!-- leyenda -->
+   <rect x="140" y="2" width="18" height="18" rx="4" fill="#22d3ee" opacity=".38"/><text x="168" y="17">2.000</text>
+   <rect x="260" y="2" width="18" height="18" rx="4" fill="#22d3ee"/><text x="288" y="17">6.000</text>
+   <rect x="380" y="2" width="18" height="18" rx="4" fill="#22d3ee" opacity=".62"/><text x="408" y="17">10.000 tokens</text>
+   <!-- rejilla y eje Y -->
+   <line class="grid" x1="130" y1="340" x2="1100" y2="340"/><text class="mut" x="118" y="347" text-anchor="end">0</text>
+   <line class="grid" x1="130" y1="265" x2="1100" y2="265"/><text class="mut" x="118" y="272" text-anchor="end">25</text>
+   <line class="grid" x1="130" y1="190" x2="1100" y2="190"/><text class="mut" x="118" y="197" text-anchor="end">50</text>
+   <line class="grid" x1="130" y1="115" x2="1100" y2="115"/><text class="mut" x="118" y="122" text-anchor="end">75</text>
+   <line class="grid" x1="130" y1="40" x2="1100" y2="40"/><text class="mut" x="118" y="47" text-anchor="end">100</text>
+   <text class="mut" transform="translate(30 190) rotate(-90)" text-anchor="middle">% con contexto suficiente</text>
+   <!-- FreshQA -->
+   <rect x="140" y="191.1" width="74" height="148.9" fill="#22d3ee" opacity=".38"/><text x="177" y="181" text-anchor="middle">63,7</text>
+   <rect x="230" y="107.8" width="74" height="232.2" fill="#22d3ee"/><text x="267" y="97" text-anchor="middle">77,4</text>
+   <rect x="320" y="107.8" width="74" height="232.2" fill="#22d3ee" opacity=".62"/><text x="357" y="97" text-anchor="middle">77,4</text>
+   <!-- HotpotQA -->
+   <rect x="470" y="203.8" width="74" height="136.2" fill="#22d3ee" opacity=".38"/><text x="507" y="193" text-anchor="middle">45,4</text>
+   <rect x="560" y="201.4" width="74" height="138.6" fill="#22d3ee"/><text x="597" y="191" text-anchor="middle">46,2</text>
+   <rect x="650" y="201.4" width="74" height="138.6" fill="#22d3ee" opacity=".62"/><text x="687" y="191" text-anchor="middle">46,2</text>
+   <!-- Musique-Ans -->
+   <rect x="800" y="239.8" width="74" height="100.2" fill="#22d3ee" opacity=".38"/><text x="837" y="229" text-anchor="middle">33,4</text>
+   <rect x="890" y="206.2" width="74" height="133.8" fill="#22d3ee"/><text x="927" y="196" text-anchor="middle">44,6</text>
+   <rect x="980" y="206.2" width="74" height="133.8" fill="#22d3ee" opacity=".62"/><text x="1017" y="196" text-anchor="middle">44,6</text>
+   <!-- anotación 6k→10k -->
+   <path d="M927 174 V166 H1017 V174" fill="none" stroke="#fbbf24" stroke-width="2"/>
+   <text x="972" y="148" text-anchor="middle" fill="#fbbf24">+4.000 tokens = +0,0 pts</text>
+   <line class="axis" x1="130" y1="340" x2="1100" y2="340"/>
+   <!-- microdescripciones -->
+   <text class="mut" x="267" y="372" text-anchor="middle">FreshQA: info reciente,</text><text class="mut" x="267" y="398" text-anchor="middle">URLs de apoyo</text>
+   <text class="mut" x="597" y="372" text-anchor="middle">HotpotQA: wiki,</text><text class="mut" x="597" y="398" text-anchor="middle">5 fragmentos</text>
+   <text class="mut" x="927" y="372" text-anchor="middle">Musique: multi-hop,</text><text class="mut" x="927" y="398" text-anchor="middle">20 fragmentos</text>
+  </svg>
+ </div>
+ <p class="page">9/16</p>
+ <aside class="notes">Puente: «Primera pregunta con la lente puesta: ¿los benchmarks que usamos traen la evidencia?». — Aplicaron el autorater a tres benchmarks. El eje vertical: porcentaje de instancias cuyo contexto alcanza. FreshQA, con URLs de apoyo del propio dataset, llega a 77%. Pero HotpotQA y Musique — multi-hop — quedan bajo la mitad: 46 y 44,6%. Dos hallazgos: pasar de 2.000 a 6.000 tokens ayuda, sobre todo en Musique; de 6.000 a 10.000, cero cambio — es truncar las mismas fuentes, no buscar más. Consecuencia incómoda: parte de los errores que le achacamos al modelo son del dataset.</aside>
+</section>
+
+<!-- ===== Figura 3/6 ===== -->
+<section class="slide" data-logical="12" data-build="1" data-builds="1" data-seconds="45">
+ <p class="meta">04 / EVIDENCIA</p>
+ <h2>Alucinan más de lo que se abstienen</h2>
+ <div class="content" style="top:158px">
+  <svg class="chart" width="1120" height="428" viewBox="0 0 1152 440" role="img" aria-label="Figuras 3 y 6 recreadas: respuestas correctas, abstenciones y alucinaciones por modelo, con contexto suficiente e insuficiente, HotpotQA">
+   <text class="head" x="280" y="26" text-anchor="middle">Gemini 1.5 Pro</text>
+   <text class="head" x="610" y="26" text-anchor="middle">GPT-4o</text>
+   <text class="head" x="940" y="26" text-anchor="middle">Gemma 27B</text>
+   <text class="mut" x="1122" y="438" text-anchor="end">HotpotQA</text>
+   <!-- Panel: contexto suficiente -->
+   <text x="130" y="58" fill="#a78bfa">contexto suficiente</text>
+   <line class="grid" x1="130" y1="206" x2="1122" y2="206"/><text class="mut" x="118" y="213" text-anchor="end">0</text>
+   <line class="grid" x1="130" y1="136" x2="1122" y2="136"/><text class="mut" x="118" y="143" text-anchor="end">40</text>
+   <line class="grid" x1="130" y1="66" x2="1122" y2="66"/><text class="mut" x="118" y="73" text-anchor="end">80</text>
+   <rect x="166" y="87.9" width="64" height="118.1" fill="#34d399"/><text x="198" y="81.9" text-anchor="middle">67,5</text>
+   <rect x="248" y="194.6" width="64" height="11.4" fill="#60a5fa"/><text x="280" y="188.6" text-anchor="middle">6,5</text>
+   <rect x="330" y="160.5" width="64" height="45.5" fill="#f87171"/><text x="362" y="154.5" text-anchor="middle">26,0</text>
+   <rect x="496" y="80.2" width="64" height="125.8" fill="#34d399"/><text x="528" y="74.2" text-anchor="middle">71,9</text>
+   <rect x="578" y="191.7" width="64" height="14.3" fill="#60a5fa"/><text x="610" y="185.7" text-anchor="middle">8,2</text>
+   <rect x="660" y="171.2" width="64" height="34.8" fill="#f87171"/><text x="692" y="165.2" text-anchor="middle">19,9</text>
+   <rect x="826" y="93.8" width="64" height="112.2" fill="#34d399"/><text x="858" y="87.8" text-anchor="middle">64,1</text>
+   <rect x="908" y="203" width="64" height="3" fill="#60a5fa"/><text x="940" y="197" text-anchor="middle">1,7</text>
+   <rect x="990" y="146.1" width="64" height="59.9" fill="#f87171"/><text x="1022" y="140.1" text-anchor="middle">34,2</text>
+   <line class="axis" x1="130" y1="206" x2="1122" y2="206"/>
+   <!-- Panel: contexto insuficiente -->
+   <text x="130" y="250" fill="#a78bfa">contexto insuficiente</text>
+   <line class="grid" x1="130" y1="398" x2="1122" y2="398"/><text class="mut" x="118" y="405" text-anchor="end">0</text>
+   <line class="grid" x1="130" y1="328" x2="1122" y2="328"/><text class="mut" x="118" y="335" text-anchor="end">40</text>
+   <line class="grid" x1="130" y1="258" x2="1122" y2="258"/><text class="mut" x="118" y="265" text-anchor="end">80</text>
+   <rect x="166" y="311.6" width="64" height="86.4" fill="#34d399"/><text x="198" y="305.6" text-anchor="middle">49,4</text>
+   <rect x="248" y="368.8" width="64" height="29.2" fill="#60a5fa"/><text x="280" y="362.8" text-anchor="middle">16,7</text>
+   <rect x="330" y="338.9" width="64" height="59.1" fill="#f87171"/><text x="362" y="332.9" text-anchor="middle">33,8</text>
+   <rect x="496" y="293.9" width="64" height="104.1" fill="#34d399"/><text x="528" y="287.9" text-anchor="middle">59,5</text>
+   <rect x="578" y="377.9" width="64" height="20.1" fill="#60a5fa"/><text x="610" y="371.9" text-anchor="middle">11,5</text>
+   <rect x="660" y="347.2" width="64" height="50.8" fill="#f87171"/><text x="692" y="341.2" text-anchor="middle">29,0</text>
+   <rect x="826" y="331.7" width="64" height="66.3" fill="#34d399"/><text x="858" y="325.7" text-anchor="middle">37,9</text>
+   <rect x="908" y="377.2" width="64" height="20.8" fill="#60a5fa"/><text x="940" y="371.2" text-anchor="middle">11,9</text>
+   <rect x="990" y="310.2" width="64" height="87.8" fill="#f87171"/><text x="1022" y="304.2" text-anchor="middle">50,2</text>
+   <line class="axis" x1="130" y1="398" x2="1122" y2="398"/>
+   <text class="mut" transform="translate(36 232) rotate(-90)" text-anchor="middle">% de respuestas</text>
+  </svg>
+  <div class="legend"><span style="--sw:#34d399">correcta</span><span style="--sw:#60a5fa">abstención</span><span style="--sw:#f87171">alucinación</span></div>
+ </div>
+ <p class="page">10/16</p>
+ <aside class="notes">Puente: «Segunda pregunta: separando por suficiencia, ¿cómo responden los modelos?». — Clasifican cada respuesta en correcta, abstención o alucinación — y ojo, alucinación aquí es respuesta juzgada incorrecta, no necesariamente una historia inventada. Fila de arriba: contexto suficiente; abajo: insuficiente. Tres hallazgos. Uno: con contexto suficiente los aciertos suben, pero la barra roja nunca desaparece — alucinan igual, miren Gemma con 34%. Dos: con contexto insuficiente deberían abstenerse, y sin embargo la barra roja supera a la azul: responden más de lo que callan. Y tres, el dato que más me impresionó: darle contexto reduce la abstención — Gemini sin RAG se abstenía el 100% de las veces; con RAG, 18,6%. Recibir cualquier documento los envalentona.</aside>
+</section>
+
+<!-- ===== Giro 35-62% ===== -->
+<section class="slide" data-logical="13" data-build="1" data-builds="1" data-seconds="35">
+ <p class="meta">04 / EVIDENCIA</p>
+ <h2>El giro: aciertan igual sin evidencia</h2>
+ <div class="content giro" style="top:184px">
+  <div>
+   <p class="giant">35-62%</p>
+   <p class="sub">de aciertos con contexto insuficiente</p>
+  </div>
+  <div class="causas8">
+   <div><span class="n">1</span><p>Pregunta sí/no: 50% por azar</p></div>
+   <div><span class="n">2</span><p>Opciones limitadas</p></div>
+   <div><span class="n">3</span><p>Multi-hop: infiere el eslabón</p></div>
+   <div><span class="n">4</span><p>Multi-hop: pista parcial + memoria</p></div>
+   <div><span class="n">5</span><p>Demasiados saltos: razona igual</p></div>
+   <div><span class="n">6</span><p>Ambigua: adivina la interpretación</p></div>
+   <div><span class="n">7</span><p>Error del autorater</p></div>
+   <div><span class="n">8</span><p>Ya lo sabía (pre-entrenamiento)</p></div>
+  </div>
+ </div>
+ <p class="page">11/16</p>
+ <aside class="notes">Puente: «Y aquí el hallazgo contraintuitivo». — Los modelos aciertan entre 35 y 62% de las veces cuando el autorater dice que el contexto NO alcanza. ¿Cómo? El análisis cualitativo encuentra estos ocho tipos; los principales: el modelo ya sabía la respuesta por entrenamiento; el contexto da una pista parcial que puentea lo que falta; la pregunta tiene pocas opciones — un sí/no se acierta la mitad de las veces; o el evaluador se equivocó. ¿Por qué importa? Porque mata la regla fácil: 'si el contexto es insuficiente, abstenerse siempre' descartaría todos estos aciertos. Necesitamos decidir con más de una señal.</aside>
+</section>
+
+<!-- ===== Dos caminos ===== -->
+<section class="slide" data-logical="14" data-build="1" data-builds="1" data-seconds="15">
+ <p class="meta">05 / INTERVENCIÓN</p>
+ <h2>La suficiencia como señal: dos caminos</h2>
+ <div class="content bifurca" style="top:214px">
+  <span class="senal">señal de suficiencia</span>
+  <svg class="conector" width="1152" height="104" viewBox="0 0 1152 104" style="position:absolute;left:0;top:66px" aria-hidden="true">
+   <path d="M576 4 C576 54 286 50 286 100" fill="none" stroke="#a78bfa" stroke-width="2.5"/>
+   <path d="M576 4 C576 54 866 50 866 100" fill="none" stroke="#a78bfa" stroke-width="2.5"/>
+  </svg>
+  <div class="caminos">
+   <div class="card camino"><h3>GENERACIÓN SELECTIVA</h3><p>decidir cuándo entregar la respuesta · no modifica el modelo</p></div>
+   <div class="card camino"><h3>FINE-TUNING</h3><p>entrenar con ejemplos "no lo sé" · modifica el modelo</p></div>
+  </div>
+ </div>
+ <p class="page">12/16</p>
+ <aside class="notes">Puente: «Con el diagnóstico listo, el paper prueba dos caminos». — Dos caminos. Uno externo: dejar el generador intacto y decidir cuáles respuestas entregar. Otro interno: reentrenar el modelo para que aprenda a decir 'no lo sé'. Veamos cada uno.</aside>
+</section>
+
+<!-- ===== Generación selectiva ===== -->
+<section class="slide" data-logical="15" data-build="1" data-builds="1" data-seconds="45">
+ <p class="meta">05 / INTERVENCIÓN</p>
+ <h2>Dos señales deciden:<br>¿respondo o me abstengo?</h2>
+ <p class="formula" style="top:242px">suficiencia (autorater) + confianza del modelo → <b>regresión logística</b> → umbral</p>
+ <div class="content" style="top:282px">
+  <svg class="chart" width="880" height="386" viewBox="0 0 980 430" role="img" aria-label="Figura 4 recreada: exactitud selectiva según cobertura, confianza sola frente a confianza más suficiencia">
+   <text class="mut" x="130" y="14">exactitud selectiva (% correcto entre lo respondido)</text>
+   <text x="920" y="52" text-anchor="end" fill="#22d3ee">Gemini 1.5 Pro · HotpotQA</text>
+   <line class="grid" x1="130" y1="350" x2="930" y2="350"/><text class="mut" x="118" y="357" text-anchor="end">60</text>
+   <line class="grid" x1="130" y1="270" x2="930" y2="270"/><text class="mut" x="118" y="277" text-anchor="end">70</text>
+   <line class="grid" x1="130" y1="190" x2="930" y2="190"/><text class="mut" x="118" y="197" text-anchor="end">80</text>
+   <line class="grid" x1="130" y1="110" x2="930" y2="110"/><text class="mut" x="118" y="117" text-anchor="end">90</text>
+   <line class="grid" x1="130" y1="30" x2="930" y2="30"/><text class="mut" x="118" y="37" text-anchor="end">100</text>
+   <polygon points="170,102 210,106 290,118 370,130 450,142 530,154 610,166 690,182 770,210 850,250 930,290 850,266 770,242 690,222 610,202 530,186 450,170 370,154 290,138 210,122 170,114" fill="#a78bfa" opacity=".18"/>
+   <polyline points="170,114 210,122 290,138 370,154 450,170 530,186 610,202 690,222 770,242 850,266 930,290" fill="none" stroke="#9aa4b2" stroke-width="4"/>
+   <polyline points="170,102 210,106 290,118 370,130 450,142 530,154 610,166 690,182 770,210 850,250 930,290" fill="none" stroke="#a78bfa" stroke-width="5"/>
+   <text x="190" y="80" fill="#a78bfa">confianza + suficiencia</text>
+   <text x="580" y="262" fill="#9aa4b2">solo confianza</text>
+   <line x1="690" y1="184" x2="690" y2="220" stroke="#fbbf24" stroke-width="3"/>
+   <line x1="700" y1="104" x2="691" y2="176" stroke="#fbbf24" stroke-width="1.5"/>
+   <text x="920" y="96" text-anchor="end" fill="#fbbf24">+5 pts cerca de 70% de cobertura</text>
+   <line class="axis" x1="130" y1="350" x2="930" y2="350"/>
+   <text class="mut" x="130" y="382" text-anchor="middle">0</text>
+   <text class="mut" x="330" y="382" text-anchor="middle">25</text>
+   <text class="mut" x="530" y="382" text-anchor="middle">50</text>
+   <text class="mut" x="730" y="382" text-anchor="middle">75</text>
+   <text class="mut" x="930" y="382" text-anchor="middle">100</text>
+   <text class="mut" x="530" y="416" text-anchor="middle">cobertura (% preguntas respondidas)</text>
+   <text class="mut" x="20" y="416">(eje Y desde 60)</text>
+  </svg>
+ </div>
+ <p class="page">13/16</p>
+ <aside class="notes">Puente: «Camino uno: responder menos, pero elegir mejor». — Las dos señales: qué dice el autorater sobre el contexto, y la confianza que el propio modelo declara en su respuesta. Una regresión logística — un clasificador simple, a propósito — las combina, y un umbral decide qué respuestas se entregan. Las métricas, inseparables: cobertura, cuánto respondo; exactitud selectiva, qué tan correcto soy cuando respondo. Expliquemos el gráfico: a igual cobertura, la curva violeta — con suficiencia — queda por encima de usar confianza sola; aquí, unos 5 puntos cerca del 70% de cobertura, y el abstract reporta mejoras de 2 a 10% según escenario. No elimina alucinaciones, y en Gemma con Musique no aporta nada: ayuda a decidir, no hace magia.</aside>
+</section>
+
+<!-- ===== Fine-tuning ===== -->
+<section class="slide" data-logical="16" data-build="1" data-builds="1" data-seconds="35">
+ <p class="meta">05 / INTERVENCIÓN</p>
+ <h2>Enseñar "no lo sé" no salió gratis</h2>
+ <p class="submono mono">Mistral 7B con LoRA · Musique</p>
+ <div class="content" style="top:214px">
+  <table class="ft">
+   <tr><th>Variante</th><th style="text-align:right;color:#34d399">Correcta</th><th style="text-align:right;color:#60a5fa">Abstención</th><th style="text-align:right;color:#f87171">Alucinación</th></tr>
+   <tr><td>RAG sin ajuste</td><td class="num c-ok">28,8</td><td class="num c-abst">11,8</td><td class="num c-hal">59,4</td></tr>
+   <tr><td>FT respuestas originales</td><td class="num c-ok mejor">31,4</td><td class="num c-abst">0,0</td><td class="num c-hal peor">68,6</td></tr>
+   <tr><td>FT 20% "no lo sé" (aleatorio)</td><td class="num c-ok">23,0</td><td class="num c-abst">1,2</td><td class="num c-hal">75,8</td></tr>
+   <tr><td>FT 20% "no lo sé" (insuficientes)</td><td class="num c-ok">23,0</td><td class="num c-abst">2,2</td><td class="num c-hal">74,8</td></tr>
+  </table>
+ </div>
+ <p class="page">14/16</p>
+ <aside class="notes">Puente: «Camino dos: ¿y si el modelo aprende a callar?». — Ajustaron Mistral 7B con LoRA, reemplazando el 20% de las respuestas de entrenamiento por 'I don't know' — a veces al azar, a veces justo en las instancias insuficientes. Miren la tabla: el ajuste con respuestas originales sube los aciertos a 31,4%... pero las abstenciones caen a cero y las alucinaciones suben a 68,6. Y las mezclas con 'no lo sé' ni siquiera superan al RAG sin ajuste. Conclusión de los autores: enseñar a abstenerse mueve otros comportamientos de forma difícil de controlar; no hay todavía estrategia confiable.</aside>
+</section>
+
+<!-- ===== Conclusiones ===== -->
+<section class="slide" data-logical="17" data-build="1" data-builds="1" data-seconds="35">
+ <p class="meta">06 / CIERRE</p>
+ <h2>La respuesta: pasan las dos cosas</h2>
+ <div class="content lente" style="top:208px">
+  <p><span class="verbo">NO ENCONTRÓ</span> — multi-hop: más de la mitad sin evidencia</p>
+  <p><span class="verbo">NO APROVECHÓ</span> — alucinan aun con la evidencia al frente</p>
+  <p><span class="verbo">LA SALIDA</span> — medir la suficiencia y decidir cuándo responder</p>
+ </div>
+ <p class="page">15/16</p>
+ <aside class="notes">Cierro volviendo a la portada: cuando falla, ¿no encontró lo necesario, o no supo aprovecharlos? Lo que vimos responde: las dos cosas. No encontró: en los benchmarks multi-hop, más de la mitad de las instancias llega sin evidencia suficiente — falla del dataset, no del modelo. No supo aprovecharlo: con la evidencia al frente, igual alucinan más de lo que se abstienen. Y la salida del paper: medir la suficiencia — un juez validado al 93% — y usar esa señal para decidir cuándo responder. Recuperar la evidencia, aprovecharla, decidir cuándo no alcanza: un RAG confiable separa los tres problemas.</aside>
+</section>
+
+<!-- ===== Gracias ===== -->
+<section class="slide hero gracias" data-logical="18" data-build="1" data-builds="1" data-seconds="5">
+ <p class="meta">06 / CIERRE</p>
+ <h1>Gracias — ¿preguntas?</h1>
+ <p class="sub">arXiv:2411.06037 · ICLR 2025</p>
+ <p class="page">16/16</p>
+ <aside class="notes">Gracias. ¿Preguntas?</aside>
+</section>
+
+</main></body></html>
