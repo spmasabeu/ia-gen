@@ -115,7 +115,7 @@
 <!-- ===== Tres fallas ===== -->
 <section class="slide" data-logical="5" data-build="1" data-builds="1" data-seconds="30">
  <p class="meta">02 / PROBLEMA</p>
- <h2>RAG falla aun con documentos en la mano</h2>
+ <h2>El modelo puede fallar tras la recuperación</h2>
  <div class="content">
   <div class="fallas">
    <div class="card falla"><p class="num">1</p><p>Responden mal aun con evidencia recuperada</p>
@@ -188,16 +188,15 @@
  <div class="content validacion" style="top:212px">
   <div><p class="giant">93%</p></div>
   <table>
-   <tr><th>Método</th><th style="text-align:right">Exactitud</th><th class="center">¿Sin respuesta oficial?</th></tr>
-   <tr class="best"><td>Gemini 1.5 Pro (1-shot)</td><td class="num">93,0%</td><td class="center si">✓</td></tr>
-   <tr><td>FLAMe (PaLM 24B ajustado)</td><td class="num">87,8%</td><td class="center si">✓</td></tr>
-   <tr><td>Gemini 1.5 Pro (0-shot)</td><td class="num">87,0%</td><td class="center si">✓</td></tr>
-   <tr><td>TRUE-NLI (T5 11B)</td><td class="num">82,6%</td><td class="center no">✗</td></tr>
-   <tr><td>Coincidencia literal (Contains GT)</td><td class="num">80,9%</td><td class="center no">✗</td></tr>
+   <tr><th>Método</th><th style="text-align:right">Exactitud</th></tr>
+   <tr class="best"><td>Gemini 1.5 Pro (1-shot)</td><td class="num">93,0%</td></tr>
+   <tr><td>FLAMe (PaLM 24B ajustado)</td><td class="num">87,8%</td></tr>
+   <tr><td>Gemini 1.5 Pro (0-shot)</td><td class="num">87,0%</td></tr>
+   <tr><td>TRUE-NLI (T5 11B)</td><td class="num">82,6%</td></tr>
   </table>
  </div>
  <p class="page">8/16</p>
- <aside class="notes">Puente: «La respuesta del paper: sí, y lo midieron así». — Armaron un conjunto difícil de 115 instancias desde PopQA, FreshQA, Natural Questions y EntityQuestions, etiquetadas por humanos, y compararon métodos. Gemini 1.5 Pro con un ejemplo en el prompt gana: 93% de exactitud. FLAMe, más barato, queda en 87,8. Y noten las dos últimas filas: los métodos que sí usan la respuesta oficial — verificar entailment o buscar la respuesta literal en el texto — rinden peor. El 93% es la exactitud del juez, no del sistema RAG completo.</aside>
+ <aside class="notes">Puente: «La respuesta del paper: sí, y lo midieron así». — Para validar el evaluador automático, reunieron 115 pares pregunta-contexto y personas etiquetaron cada uno como suficiente o insuficiente. Después compararon las etiquetas predichas por estos métodos con las humanas. La exactitud de la tabla mide ese acuerdo, no la calidad de las respuestas de un sistema RAG. Gemini 1.5 Pro con un ejemplo alcanza 93%; los otros métodos mostrados quedan por debajo. Esto respalda usar un evaluador automático para analizar los contextos de los benchmarks que veremos ahora.</aside>
 </section>
 
 <!-- ===== Figura 2 ===== -->
@@ -385,7 +384,7 @@
   </table>
  </div>
  <p class="page">14/16</p>
- <aside class="notes">Puente: «Camino dos: ¿y si el modelo aprende a callar?». — Ajustaron Mistral 7B con LoRA, reemplazando el 20% de las respuestas de entrenamiento por 'I don't know' — a veces al azar, a veces justo en las instancias insuficientes. Miren la tabla: el ajuste con respuestas originales sube los aciertos a 31,4%... pero las abstenciones caen a cero y las alucinaciones suben a 68,6. Y las mezclas con 'no lo sé' ni siquiera superan al RAG sin ajuste. Conclusión de los autores: enseñar a abstenerse mueve otros comportamientos de forma difícil de controlar; no hay todavía estrategia confiable.</aside>
+ <aside class="notes">Puente: «Camino dos: ¿y si el modelo aprende a callar?». — Todas las filas prueban Mistral 7B con RAG; cambia el entrenamiento. «Sin ajuste» es el modelo base. «FT respuestas originales» usa las respuestas correctas del conjunto de entrenamiento. Las otras dos variantes reemplazan el 20% por «no lo sé»: al azar o donde faltaba contexto. ¿Funcionó? Con respuestas originales, suben los aciertos (28,8% a 31,4%), pero desaparece la abstención. Con «no lo sé», caen los aciertos a 23% y tampoco mejora la abstención frente al modelo base. Conclusión: aquí el ajuste fino no logró enseñar a abstenerse sin perjudicar otras métricas.</aside>
 </section>
 
 <!-- ===== Conclusiones ===== -->
@@ -405,7 +404,8 @@
 <section class="slide hero gracias" data-logical="18" data-build="1" data-builds="1" data-seconds="5">
  <p class="meta">06 / CIERRE</p>
  <h1>Gracias — ¿preguntas?</h1>
- <p class="sub">arXiv:2411.06037 · ICLR 2025</p>
+ <p class="sub">Sufficient Context: A New Lens on RAG Systems · ICLR 2025</p>
+ <p class="byline">Sebastián Palma Masabeu · IA Generativa · 7 de octubre de 2026</p>
  <p class="page">16/16</p>
  <aside class="notes">Gracias. ¿Preguntas?</aside>
 </section>
