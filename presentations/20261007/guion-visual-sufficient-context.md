@@ -167,7 +167,7 @@ Ritmo: ~125 palabras/minuto hablando. Cada slide trae su presupuesto de tiempo y
 **Puente:** "RAG suena a problema resuelto. No lo es."
 
 **Texto visible:**
-- Título: `RAG falla aun con documentos en la mano`
+- Título: `El modelo puede fallar tras la recuperación`
 - Tres tarjetas numeradas, una línea cada una:
   1. `Responden mal aun con evidencia recuperada`
   2. `Se distraen con información no relacionada`
@@ -256,20 +256,19 @@ Ritmo: ~125 palabras/minuto hablando. Cada slide trae su presupuesto de tiempo y
 **Texto visible:**
 - Título: `93% de acuerdo con humanos`
 - Línea mono: `115 instancias etiquetadas a mano · PopQA · FreshQA · Natural Questions · EntityQuestions`
-- Tabla 1 recreada (reducida a 3 columnas):
+- Tabla 1 recreada (reducida a 2 columnas y 4 métodos):
 
-| Método | Exactitud | ¿Sin respuesta oficial? |
-|---|---:|:---:|
-| **Gemini 1.5 Pro (1-shot)** | **93,0%** | ✓ |
-| FLAMe (PaLM 24B ajustado) | 87,8% | ✓ |
-| Gemini 1.5 Pro (0-shot) | 87,0% | ✓ |
-| TRUE-NLI (T5 11B) | 82,6% | ✗ |
-| Coincidencia literal (Contains GT) | 80,9% | ✗ |
+| Método | Exactitud |
+|---|---:|
+| **Gemini 1.5 Pro (1-shot)** | **93,0%** |
+| FLAMe (PaLM 24B ajustado) | 87,8% |
+| Gemini 1.5 Pro (0-shot) | 87,0% |
+| TRUE-NLI (T5 11B) | 82,6% |
 
 **Visual:** cifra `93%` gigante en ámbar a la izquierda; tabla recreada con el estilo del deck a la derecha, fila ganadora resaltada con fondo violeta sutil. Sin pie.
 
 **Guion oral (~75 palabras):**
-"Armaron un conjunto difícil de 115 instancias desde PopQA, FreshQA, Natural Questions y EntityQuestions, etiquetadas por humanos, y compararon métodos. Gemini 1.5 Pro con un ejemplo en el prompt gana: 93% de exactitud. FLAMe, más barato, queda en 87,8. Y noten las dos últimas filas: los métodos que sí usan la respuesta oficial — verificar entailment o buscar la respuesta literal en el texto — rinden peor. El 93% es la exactitud del juez, no del sistema RAG completo."
+"Para validar el evaluador automático, reunieron 115 pares pregunta-contexto y personas etiquetaron cada uno como suficiente o insuficiente. Después compararon las etiquetas predichas por estos métodos con las humanas. La exactitud de la tabla mide ese acuerdo, no la calidad de las respuestas de un sistema RAG. Gemini 1.5 Pro con un ejemplo alcanza 93%; los otros métodos mostrados quedan por debajo. Esto respalda usar un evaluador automático para analizar los contextos de los benchmarks que veremos ahora."
 
 **Al salir:** confían (con su matiz) en la herramienta; la historia puede usar el autorater como lente.
 
@@ -415,7 +414,7 @@ Ritmo: ~125 palabras/minuto hablando. Cada slide trae su presupuesto de tiempo y
 **Visual:** tabla con columnas tintadas (verde/azul/rojo suaves); fila "FT respuestas originales" con su 31,4 en negrita pero su 68,6 también resaltado en rojo — la tabla misma cuenta la paradoja.
 
 **Guion oral (~75 palabras):**
-"Ajustaron Mistral 7B con LoRA, reemplazando el 20% de las respuestas de entrenamiento por 'I don't know' — a veces al azar, a veces justo en las instancias insuficientes. Miren la tabla: el ajuste con respuestas originales sube los aciertos a 31,4%... pero las abstenciones caen a cero y las alucinaciones suben a 68,6. Y las mezclas con 'no lo sé' ni siquiera superan al RAG sin ajuste. Conclusión de los autores: enseñar a abstenerse mueve otros comportamientos de forma difícil de controlar; no hay todavía estrategia confiable."
+"Todas las filas prueban Mistral 7B con RAG; cambia el entrenamiento. «Sin ajuste» es el modelo base. «FT respuestas originales» usa las respuestas correctas del conjunto de entrenamiento. Las otras dos variantes reemplazan el 20% por «no lo sé»: al azar o donde faltaba contexto. ¿Funcionó? Con respuestas originales, suben los aciertos (28,8% a 31,4%), pero desaparece la abstención. Con «no lo sé», caen los aciertos a 23% y tampoco mejora la abstención frente al modelo base. Conclusión: aquí el ajuste fino no logró enseñar a abstenerse sin perjudicar otras métricas."
 
 **Al salir:** saben que el camino interno quedó abierto, no resuelto; la señal externa es el aporte práctico.
 
@@ -444,8 +443,8 @@ Ritmo: ~125 palabras/minuto hablando. Cada slide trae su presupuesto de tiempo y
 ### Slide 16 — Gracias · 0:05
 
 **Sección:** `06 / CIERRE`
-**Texto visible:** `Gracias — ¿preguntas?` + referencia mono: `arXiv:2411.06037 · ICLR 2025`
-**Visual:** fondo plano como el resto del deck (sin fotografía). Nada más.
+**Texto visible:** `Gracias — ¿preguntas?` + subtítulo mono `Sufficient Context: A New Lens on RAG Systems · ICLR 2025` + línea inferior `Sebastián Palma Masabeu · IA Generativa · 7 de octubre de 2026`.
+**Visual:** fondo plano como el resto del deck (sin fotografía); subtítulo y línea inferior iguales a la portada.
 **Guion oral:** "Gracias. ¿Preguntas?"
 
 ---
