@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Contexto suficiente · Una nueva mirada a RAG</title><link rel="stylesheet" href="deck.css"><script src="deck.js" defer></script></head>
+<body><main aria-label="Presentación: contexto suficiente">
+
+<section class="slide hero active" data-seconds="25">
+ <p class="section">00 / Apertura</p><h1>Tener contexto<br>no significa<br><em>tener respuesta.</em></h1>
+ <p class="subtitle">Contexto suficiente: una nueva mirada a los sistemas de generación aumentada por recuperación</p>
+ <p class="authors">Hailey Joren · Jianyi Zhang · Chun-Sung Ferng<br>Da-Cheng Juan · Ankur Taly · Cyrus Rashtchian · ICLR 2025</p>
+ <footer><span class="source">Sufficient Context · arXiv:2411.06037v3 · 07 octubre 2026</span></footer>
+ <aside class="notes">La intuición inicial es simple: con más apuntes deberíamos responder mejor. Pero cualquiera que haya estudiado con demasiadas fuentes sabe que no siempre pasa. A veces hablan del tema, pero falta justo la pieza que necesitamos. Este paper lleva esa intuición a los modelos de lenguaje: tener documentos no significa tener respuesta.</aside>
+</section>
+
+<section class="slide" data-seconds="30">
+ <div class="rail"><span class="num">01</span><span class="tag">Motivación</span></div>
+ <div class="body"><h2>Cuando no basta con<br>lo que recordamos</h2>
+ <div class="spread content"><div class="step"><span class="number">01</span><h3>Memoria propia</h3><p class="muted small">Lo que ya sabemos</p></div><span class="arrow">→</span><div class="step"><span class="number">02</span><h3>Fuentes externas</h3><div class="source-list"><span>Encarta / Wikipedia</span><span>Stack Overflow</span><span>Artículos / documentación</span></div></div><span class="arrow">→</span><div class="step"><span class="number">03</span><h3>Mejor respuesta</h3><p class="muted small">Lo que podemos construir</p></div></div>
+ <p class="bottom-line">Consultar fuentes amplía lo disponible <em>en ese momento.</em></p></div>
+ <footer><span class="source">Analogía propia; no es un experimento del artículo.</span></footer>
+ <aside class="notes">Si nos piden escribir un ensayo, partimos desde lo que sabemos. Cuando eso no alcanza, consultamos una enciclopedia, Wikipedia, Stack Overflow o artículos. No estamos reentrenando nuestro cerebro: incorporamos información externa para resolver una tarea concreta. Esta es una analogía propia para entrar a RAG. Consultar ayuda, pero todavía tenemos que encontrar el dato correcto y usarlo bien.</aside>
+</section>
+
+<section class="slide" data-seconds="30">
+ <div class="rail"><span class="num">02</span><span class="tag">RAG</span></div>
+ <div class="body"><h2>RAG agrega contexto<br><em>en inferencia</em></h2>
+ <div class="spread pipeline content" style="margin-top:96px"><div class="step"><span class="number">01</span><h3>Pregunta</h3></div><span class="arrow">→</span><div class="step"><span class="number">02</span><h3>Búsqueda</h3></div><span class="arrow">→</span><div class="step"><span class="number">03</span><h3>Fragmentos</h3></div><span class="arrow">→</span><div class="step"><span class="number">04</span><h3>Instrucciones + contexto</h3></div><span class="arrow">→</span><div class="step"><span class="number">05</span><h3>Respuesta</h3></div></div>
+ <p class="bottom-line">Los pesos del modelo <strong>no cambian.</strong></p></div>
+ <footer><span class="source">RAG: generación aumentada por recuperación · §1</span></footer>
+ <aside class="notes">RAG significa generación aumentada por recuperación. Primero llega una pregunta. El sistema busca documentos, recupera fragmentos y los incorpora a las instrucciones que recibe el modelo. Finalmente, el modelo genera una respuesta. RAG ocurre a nivel de inferencia, no de entrenamiento. Los pesos no cambian para cada pregunta: cambia la información que el modelo tiene a mano al responder.</aside>
+</section>
+
+<section class="slide" data-seconds="20">
+ <div class="rail"><span class="num">02</span><span class="tag">RAG</span></div>
+ <div class="body"><h2>Los documentos entran<br>en las instrucciones del modelo</h2>
+ <div class="grid2 content"><div><p class="small mono cyan" style="margin-bottom:24px">PREGUNTA DEL USUARIO</p><p class="lead">¿En qué país nació el autor<br>de <i>Cien años de soledad</i>?</p><p class="muted" style="margin-top:38px">Consulta de fuentes →</p></div><div><div class="document prompt"><p class="label">ENTRADA DEL MODELO</p><p>Pregunta + contexto recuperado</p><p class="small muted" style="margin-top:20px">«Gabriel García Márquez, autor de<br><i>Cien años de soledad</i>, nació en Colombia».</p></div><div class="answer"><span class="small mono">RESPUESTA</span><br><strong>Colombia</strong></div></div></div></div>
+ <footer><span class="source">Ejemplo didáctico inventado; no pertenece a los conjuntos evaluados.</span></footer>
+ <aside class="notes">Aquí preguntamos en qué país nació el autor de Cien años de soledad. El sistema recupera un fragmento que conecta al autor con la obra y dice que nació en Colombia. El modelo recibe pregunta y contexto juntos. Lo importante para el paper es preguntar: ¿ese contexto realmente alcanza para responder?</aside>
+</section>
+
+<section class="slide" data-seconds="25">
+ <div class="rail"><span class="num">03</span><span class="tag">Problema</span></div>
+ <div class="body"><h2>Más contexto<br>no elimina los errores</h2>
+ <div class="grid3 content"><div class="card topline-rose"><p class="problem-number">01</p><h3>Responde mal</h3><p class="muted" style="margin-top:20px">Incluso con evidencia<br>recuperada</p></div><div class="card topline-rose"><p class="problem-number">02</p><h3>Se distrae</h3><p class="muted" style="margin-top:20px">Con información<br>no relacionada</p></div><div class="card topline-rose"><p class="problem-number">03</p><h3>No extrae el dato</h3><p class="muted" style="margin-top:20px">Desde textos largos</p></div></div></div>
+ <footer><span class="source">Tres comportamientos señalados en la introducción · §1</span></footer>
+ <aside class="notes">El artículo parte de tres problemas conocidos. Un modelo puede responder incorrectamente con evidencia recuperada, distraerse con información irrelevante o no extraer el dato desde un texto largo. Por eso, agregar documentos no cierra el problema. Si una respuesta falla, todavía falta saber si no encontró lo necesario o si no supo aprovecharlo.</aside>
+</section>
+
+<section class="slide" data-seconds="30">
+ <div class="rail"><span class="num">04</span><span class="tag">Estado previo</span></div>
+ <div class="body"><h2>Relevante no siempre<br>significa <em>suficiente</em></h2>
+ <p class="muted content">Ruido · relevancia · robustez · alucinaciones</p><div class="axis-line" style="margin-top:88px"></div><div class="spread"><p class="lead">Relacionado<br>con el tema</p><p class="lead blue" style="text-align:right">Contiene evidencia<br>para responder</p></div>
+ <p class="bottom-line">La pregunta pendiente: <strong>¿la información alcanzaba?</strong></p></div>
+ <footer><span class="source">Motivación frente a trabajos previos · §2</span></footer>
+ <aside class="notes">Los trabajos previos ya estudiaban ruido, recuperación imperfecta y alucinaciones. Pero relevante podía significar cosas distintas: un texto que habla del tema, o uno que permite contestar la pregunta. Esa diferencia importa al interpretar un error. Este paper propone hacer explícita la pregunta que faltaba: antes de evaluar al generador, ¿la información disponible realmente alcanzaba para construir una respuesta?</aside>
+</section>
+
+<section class="slide" data-seconds="35">
+ <div class="rail"><span class="num">05</span><span class="tag">Propuesta</span></div>
+ <div class="body"><h2>¿El contexto alcanza<br>para construir una respuesta?</h2>
+ <div class="equation">(Q, C) <span class="cyan">→</span> existe una respuesta plausible A′</div><div class="grid3"><div class="card topline-blue"><span class="key">Q</span>Pregunta</div><div class="card topline-blue"><span class="key">C</span>Contexto disponible</div><div class="card topline-blue"><span class="key">A′</span>Respuesta apoyada en C</div></div>
+ <p class="bottom-line"><strong class="rose">Suficiente ≠ verdadero.</strong> El contexto también puede estar equivocado.</p></div>
+ <footer><span class="source">Definición de contexto suficiente · §3.1</span></footer>
+ <aside class="notes">Formalmente, cada entrada tiene una pregunta Q y un contexto C. Hay contexto suficiente si existe una respuesta A prima plausible para esa pregunta dada la información del contexto. No necesitan conocer la respuesta oficial de antemano. El matiz decisivo es que suficiente no significa verdadero: un documento equivocado puede permitir construir una respuesta muy clara. La suficiencia evalúa si se puede responder desde el texto, no verifica la verdad del texto.</aside>
+</section>
+
+<section class="slide" data-seconds="20">
+ <div class="rail"><span class="num">05</span><span class="tag">Propuesta</span></div>
+ <div class="body"><h2>Hablar del tema no alcanza</h2><p class="lead content">¿En qué ciudad nació Ana?</p>
+ <div class="grid2" style="margin-top:46px"><div class="document" style="border-left:5px solid var(--rose)"><p class="verdict rose">INSUFICIENTE</p><p class="example">Ana vive en Valparaíso.<br>Su madre nació en Santiago.</p></div><div class="document" style="border-left:5px solid var(--cyan)"><p class="verdict cyan">SUFICIENTE</p><p class="example">Ana nació en<br><strong>Concepción.</strong></p></div></div></div>
+ <footer><span class="source">Ejemplo didáctico propio, inspirado en la definición de §3.1.</span></footer>
+ <aside class="notes">Preguntamos dónde nació Ana. El primer texto habla de ella, de su madre y de ciudades. Es relevante, pero no da su lugar de nacimiento. El segundo sí permite responder. No falta más texto en abstracto: falta un hecho específico. Esa diferencia es el corazón de la propuesta.</aside>
+</section>
+
+<section class="slide" data-seconds="25">
+ <div class="rail"><span class="num">05</span><span class="tag">Propuesta</span></div>
+ <div class="body"><h2>La suficiencia también<br>exige desambiguar</h2>
+ <div class="grid3 content"><div class="card topline-blue"><span class="symbol">A → B → C</span><h3>Conectar hechos</h3><p class="muted" style="margin-top:20px">Sin inventar enlaces</p></div><div class="card topline-blue"><span class="symbol">Q → Q₁ / Q₂</span><h3>Precisar la pregunta</h3><p class="muted" style="margin-top:20px">Distinguir referentes</p></div><div class="card topline-blue"><span class="symbol">C → A₁ / A₂</span><h3>Distinguir respuestas</h3><p class="muted" style="margin-top:20px">Resolver alternativas</p></div></div></div>
+ <footer><span class="source">Tres observaciones sobre la definición · §3.1</span></footer>
+ <aside class="notes">La definición contempla tres casos borde. Podemos conectar varios hechos, pero no inventar enlaces ausentes. Si la pregunta tiene varios referentes posibles, el contexto debe permitir distinguirlos y responder según la interpretación. Y si ofrece varias respuestas plausibles, debe incluir información para distinguirlas. No basta con encontrar una palabra que parezca una respuesta.</aside>
+</section>
+
+<section class="slide" data-seconds="25">
+ <div class="rail"><span class="num">06</span><span class="tag">Evaluador automático</span></div>
+ <div class="body"><h2>Un juez para<br>pregunta + contexto</h2>
+ <div class="spread content" style="margin-top:90px"><div><h3>Pregunta</h3><p class="giant" style="font-size:68px;color:var(--muted)">+</p><h3>Contexto</h3></div><span class="arrow">→</span><div class="rater"><p class="small mono cyan">EVALUADOR AUTOMÁTICO</p><h3 style="margin-top:24px">¿Alcanza?</h3></div><span class="arrow">→</span><div><p class="result cyan">Suficiente</p><p class="result rose">Insuficiente</p></div></div>
+ <p class="bottom-line">No recibe la respuesta oficial.</p></div>
+ <footer><span class="source">Evaluador de suficiencia (autorater) · §3.2</span></footer>
+ <aside class="notes">Una vez definida la suficiencia, hay que etiquetar muchos ejemplos. Para escalar esa tarea usan otro modelo como evaluador automático, o autorater. Recibe pregunta y contexto y devuelve suficiente o insuficiente. La ventaja es que no necesita la respuesta oficial. Eso permite usar esta señal cuando llega una pregunta nueva y todavía no conocemos su solución.</aside>
+</section>
+
+<section class="slide" data-seconds="35">
+ <div class="rail"><span class="num">06</span><span class="tag">Evaluador automático</span></div>
+ <div class="body"><h2>Primero lo comparan<br>contra humanos</h2>
+ <div class="validation"><div><p class="giant blue">93,0<span style="font-size:68px">%</span></p><p class="lead">Exactitud al clasificar<br><strong>suficiencia</strong></p><p class="small muted" style="margin-top:22px">115 casos etiquetados<br>por humanos</p></div><table><thead><tr><th>Método</th><th>Exactitud</th><th>Sin respuesta<br>oficial</th></tr></thead><tbody><tr class="best"><td>Gemini 1.5 Pro · 1 ejemplo</td><td>93,0%</td><td>Sí</td></tr><tr><td>Gemini 1.5 Pro · sin ejemplo</td><td>87,0%</td><td>Sí</td></tr><tr><td>FLAMe</td><td>87,8%</td><td>Sí</td></tr><tr><td>TRUE-NLI</td><td>82,6%</td><td>No</td></tr><tr><td>Coincidencia literal</td><td>80,9%</td><td>No</td></tr></tbody></table></div></div>
+ <footer><span class="source">Tabla 1, recreada · No mide el acierto de las respuestas de RAG.</span></footer>
+ <aside class="notes">La validación usa 115 casos difíciles de cuatro conjuntos de preguntas, etiquetados por humanos. Comparan varios métodos. El mejor resultado es Gemini 1.5 Pro con un ejemplo en las instrucciones: 93 por ciento de exactitud. Fíjense en el denominador: mide clasificaciones de suficiencia, no respuestas correctas del asistente. Es evidencia útil, pero proviene de un conjunto pequeño y no garantiza el mismo rendimiento en cualquier dominio.</aside>
+</section>
+
+<section class="slide" data-seconds="50">
+ <div class="rail"><span class="num">07</span><span class="tag">Evidencia</span></div>
+ <div class="body"><h2>Muchos conjuntos de evaluación<br>no traen toda la evidencia</h2>
+ <div class="chart-layout"><div><div class="legend"><span style="--swatch:#8a8073">2.000 tokens</span><span style="--swatch:#3651d9">6.000 tokens</span><span style="--swatch:#0a88ad">10.000 tokens</span></div><svg id="figure2" class="chart" viewBox="0 0 830 440" role="img" aria-label="Porcentaje de entradas con contexto suficiente por conjunto y límite de tokens"></svg></div><div class="callout"><p class="small mono cyan">CON 6.000 TOKENS</p><p class="giant blue">44,6%</p><p>Musique-Ans:<br>menos de la mitad.</p><p class="small muted">De 6.000 a 10.000:<br>sin cambio observado.</p></div></div></div>
+ <footer><span class="source">Figura 2, valores originales · Mismas fuentes truncadas; no es un ranking de buscadores.</span></footer>
+ <aside class="notes">Ahora el evaluador analiza tres conjuntos. Las barras muestran qué porcentaje de entradas tiene contexto suficiente; los colores representan límites de dos mil, seis mil y diez mil tokens. Con seis mil, FreshQA llega a 77,4 por ciento. Usa páginas de apoyo seleccionadas. HotpotQA, basado en Wikipedia, queda en 46,2; Musique, que exige conectar hechos de veinte fragmentos, en 44,6. Pasar de dos mil a seis mil ayuda, pero de seis mil a diez mil no cambia estos resultados. Ojo: amplían el límite sobre las mismas fuentes, no buscan otras. Si falta evidencia, no todos los errores pueden atribuirse al generador.</aside>
+</section>
+
+<section class="slide" data-seconds="50">
+ <div class="rail"><span class="num">07</span><span class="tag">Evidencia</span></div>
+ <div class="body"><h2>RAG ayuda, pero no basta</h2>
+ <div class="content" style="margin-top:30px"><div class="spread"><p class="chart-title">HotpotQA · proporción dentro de cada subconjunto</p><div class="legend"><span style="--swatch:#0a88ad">Correcta</span><span style="--swatch:#e0a63c">Abstención</span><span style="--swatch:#d0215f">Incorrecta</span></div></div><svg id="figure3" class="chart" viewBox="0 0 1310 405" role="img" aria-label="Respuestas con contexto suficiente e insuficiente en tres modelos"></svg></div>
+ <p class="bottom-line">Con evidencia hay errores; sin ella, <strong class="rose">responden más de lo que se abstienen.</strong></p></div>
+ <footer><span class="source">Figura 3, selección de paneles · Porcentajes aproximados por lectura gráfica, redondeados.</span></footer>
+ <aside class="notes">Esta es una versión reducida de la figura tres: solo HotpotQA y tres modelos. Cada barra suma cien por ciento dentro de su grupo. Arriba hay contexto suficiente; abajo, insuficiente. Azul indica aciertos, amarillo abstenciones y rosado respuestas incorrectas. Con evidencia suficiente suben los aciertos, pero el rosado no desaparece. Sin evidencia suficiente también hay aciertos, y las respuestas incorrectas superan a las abstenciones. El artículo llama alucinación a la respuesta juzgada incorrecta; no necesariamente es una historia inventada. Los valores están redondeados desde la figura. El patrón muestra dos problemas distintos: usar bien lo recuperado y decidir cuándo responder.</aside>
+</section>
+
+<section class="slide" data-seconds="35">
+ <div class="rail"><span class="num">07</span><span class="tag">Evidencia</span></div>
+ <div class="body"><h2>Una pista incompleta<br><em>puede ayudar</em></h2>
+ <div class="grid4 content" style="margin-top:80px"><div class="card topline-cyan"><span class="symbol">01</span><h3>Conocimiento<br>previo</h3></div><div class="card topline-cyan"><span class="symbol">02</span><h3>Pista<br>parcial</h3></div><div class="card topline-cyan"><span class="symbol">03</span><h3>Pocas<br>alternativas</h3></div><div class="card topline-rose"><span class="symbol rose">04</span><h3>Error del<br>evaluador</h3></div></div>
+ <p class="bottom-line">Contexto insuficiente <strong class="blue">≠</strong> contexto inútil.</p></div>
+ <footer><span class="source">Análisis cualitativo · §4.3, tabla 2 · Cuatro explicaciones seleccionadas.</span></footer>
+ <aside class="notes">Aquí aparece el giro: insuficiente no significa inútil. Un modelo puede acertar porque ya conocía la respuesta, porque el contexto aporta una pista que completa con su conocimiento o porque hay pocas alternativas. También puede haber un error del evaluador. Los autores estudian incluso casos donde el modelo fallaba sin documentos y acierta con contexto incompleto. Por eso, abstenerse siempre que falta evidencia descartaría respuestas correctas. Necesitamos más de una señal.</aside>
+</section>
+
+<section class="slide" data-seconds="20">
+ <div class="rail"><span class="num">08</span><span class="tag">Intervenciones</span></div>
+ <div class="body"><h2>¿Cómo guiar la decisión<br>de responder?</h2>
+ <div class="grid2 content" style="margin-top:90px"><div class="path"><p class="path-label">01 / SELECCIÓN EXTERNA</p><h3>Generar → filtrar → entregar</h3><p class="muted" style="margin-top:32px">Decidir qué respuestas emitir</p></div><div class="path rose"><p class="path-label rose">02 / AJUSTE DEL MODELO</p><h3>Aprender a decir «no lo sé»</h3><p class="muted" style="margin-top:32px">Cambiar el comportamiento al generar</p></div></div></div>
+ <footer><span class="source">Generación selectiva (§5.1) y ajuste fino (§5.2).</span></footer>
+ <aside class="notes">Después del diagnóstico prueban dos caminos. Uno mantiene el generador y aplica un filtro externo para decidir qué respuestas entregar. El otro ajusta el modelo con ejemplos de no lo sé, intentando que aprenda a abstenerse. La primera intervención selecciona respuestas; la segunda modifica cómo se generan.</aside>
+</section>
+
+<section class="slide" data-seconds="45">
+ <div class="rail"><span class="num">08</span><span class="tag">Intervenciones</span></div>
+ <div class="body"><h2>Responder menos,<br>pero elegir mejor</h2>
+ <div class="chart-layout" style="margin-top:20px"><div><p class="chart-title">Gemini 1.5 Pro · HotpotQA</p><div class="legend"><span style="--swatch:#7a7060">Confianza</span><span style="--swatch:#3651d9">Confianza + suficiencia</span></div><svg id="figure4" class="chart" viewBox="0 0 830 400" role="img" aria-label="Cobertura frente a exactitud selectiva: curvas aproximadas de Gemini en HotpotQA"></svg></div><div class="callout"><p class="giant blue">2–10%</p><p>Mejora reportada<br>entre las respuestas<br><strong>emitidas</strong></p><p class="small muted">Depende del modelo,<br>la tarea y la cobertura.</p></div></div></div>
+ <footer><span class="source">Figura 4, panel seleccionado y puntos aproximados · Rango 2–10%: resumen del artículo.</span></footer>
+ <aside class="notes">Combinan suficiencia y confianza declarada por el modelo en una regresión logística. Un umbral decide qué entregar. El eje horizontal es cobertura: qué proporción de consultas recibe respuesta. El vertical es exactitud selectiva: qué proporción de lo entregado es correcta. A igual cobertura, sumar suficiencia mejora la selección en este panel de Gemini con HotpotQA. El resumen reporta mejoras del dos al diez por ciento entre respuestas emitidas, no sobre todas las preguntas. No siempre ayuda: con Gemma en Musique ambas curvas coinciden. No elimina alucinaciones; ayuda a decidir cuándo conviene responder.</aside>
+</section>
+
+<section class="slide" data-seconds="30">
+ <div class="rail"><span class="num">09</span><span class="tag">Crítica</span></div>
+ <div class="body"><h2>Enseñar «no lo sé»<br>no fue una solución limpia</h2>
+ <div class="grid2 content"><div class="card topline-rose"><p class="small mono rose">AJUSTE FINO</p><h3 style="margin-top:26px">Más aciertos en algunos casos.<br>Persisten los errores.</h3><p class="muted" style="margin-top:24px">El equilibrio con la abstención cambia.</p></div><div class="card topline-cyan"><p class="small mono cyan">ALCANCE DEL ESTUDIO</p><div style="font-size:31px;line-height:1.8;margin-top:16px">Preguntas y respuestas textuales<br>Evaluadores imperfectos<br>Recuperación sin optimizar</div></div></div>
+ <p class="bottom-line">La suficiencia aporta una señal, <strong>no una garantía universal.</strong></p></div>
+ <footer><span class="source">§5.2, §6 y apéndice B.1 · Ajuste de Mistral-7B-Instruct-v0.3.</span></footer>
+ <aside class="notes">El ajuste fino intenta enseñar abstención reemplazando algunas respuestas por no lo sé. Los resultados no son robustos: puede subir el acierto, pero las respuestas incorrectas siguen siendo frecuentes y cambian otros comportamientos. Además, el estudio se concentra en preguntas y respuestas textuales, depende de evaluadores imperfectos y no optimiza los recuperadores. La señal sirve, pero todavía necesita validación en cada escenario.</aside>
+</section>
+
+<section class="slide hero closing" data-seconds="25">
+ <p class="section">10 / Cierre</p><h2>Un RAG confiable<br>necesita tres cosas</h2><div class="closing-list"><span>01 · Recuperar evidencia</span><span>02 · Usar la evidencia</span><span class="blue">03 · Saber cuándo no alcanza</span></div><p class="thanks">Gracias. ¿Preguntas?</p>
+ <footer><span class="source">Joren et al. · ICLR 2025 · arXiv:2411.06037v3</span></footer>
+ <aside class="notes">La contribución no es un nuevo buscador ni un nuevo modelo. Es una forma de diagnosticar RAG: preguntar si la evidencia alcanzaba antes de juzgar la respuesta. Eso ayuda a separar recuperación, uso de información y decisión de responder. Un sistema confiable también necesita reconocer: con esto todavía no alcanza. Gracias.</aside>
+</section>
+
+</main></body></html>
