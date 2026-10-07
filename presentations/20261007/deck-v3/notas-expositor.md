@@ -1,6 +1,6 @@
 # Guion del expositor · Sufficient Context (deck v3)
 
-Objetivo: **8:30** (510 s) a ~125 palabras/minuto; 1545 palabras de guion. Ensayar con cronómetro contra la pauta. Si el ensayo pasa de 9:30, recortar en este orden: referencias orales de la slide 5 (−10 s), detalle LoRA de la slide 14 (−10 s).
+Objetivo: **8:30** (510 s) a ~125 palabras/minuto; 1547 palabras de guion. Ensayar con cronómetro contra la pauta. Si el ensayo pasa de 9:30, recortar en este orden: referencias orales de la slide 5 (−10 s), detalle LoRA de la slide 14 (−10 s).
 
 Fuente editable: los `aside.notes` de `deck.html`. Regenerar con `node exportar.mjs`.
 
@@ -73,7 +73,7 @@ Puente: «Definir está bien. Pero ¿quién etiqueta miles de instancias?». —
 
 **3:45–4:20 · 35 s**
 
-Puente: «La respuesta del paper: sí, y lo midieron así». — Armaron un conjunto difícil de 115 instancias desde PopQA, FreshQA, Natural Questions y EntityQuestions, etiquetadas por humanos, y compararon métodos. Gemini 1.5 Pro con un ejemplo en el prompt gana: 93% de exactitud. FLAMe, más barato, queda en 87,8. Y noten las dos últimas filas: los métodos que sí usan la respuesta oficial — verificar entailment o buscar la respuesta literal en el texto — rinden peor. El 93% es la exactitud del juez, no del sistema RAG completo.
+Puente: «La respuesta del paper: sí, y lo midieron así». — Para validar el evaluador automático, reunieron 115 pares pregunta-contexto y personas etiquetaron cada uno como suficiente o insuficiente. Después compararon las etiquetas predichas por estos métodos con las humanas. La exactitud de la tabla mide ese acuerdo, no la calidad de las respuestas de un sistema RAG. Gemini 1.5 Pro con un ejemplo alcanza 93%; los otros métodos mostrados quedan por debajo. Esto respalda usar un evaluador automático para analizar los contextos de los benchmarks que veremos ahora.
 
 ## Slide 09 · Figura 2
 
@@ -109,7 +109,7 @@ Puente: «Camino uno: responder menos, pero elegir mejor». — Las dos señales
 
 **7:15–7:50 · 35 s**
 
-Puente: «Camino dos: ¿y si el modelo aprende a callar?». — Ajustaron Mistral 7B con LoRA, reemplazando el 20% de las respuestas de entrenamiento por 'I don't know' — a veces al azar, a veces justo en las instancias insuficientes. Miren la tabla: el ajuste con respuestas originales sube los aciertos a 31,4%... pero las abstenciones caen a cero y las alucinaciones suben a 68,6. Y las mezclas con 'no lo sé' ni siquiera superan al RAG sin ajuste. Conclusión de los autores: enseñar a abstenerse mueve otros comportamientos de forma difícil de controlar; no hay todavía estrategia confiable.
+Puente: «Camino dos: ¿y si el modelo aprende a callar?». — Todas las filas prueban Mistral 7B con RAG; cambia el entrenamiento. «Sin ajuste» es el modelo base. «FT respuestas originales» usa las respuestas correctas del conjunto de entrenamiento. Las otras dos variantes reemplazan el 20% por «no lo sé»: al azar o donde faltaba contexto. ¿Funcionó? Con respuestas originales, suben los aciertos (28,8% a 31,4%), pero desaparece la abstención. Con «no lo sé», caen los aciertos a 23% y tampoco mejora la abstención frente al modelo base. Conclusión: aquí el ajuste fino no logró enseñar a abstenerse sin perjudicar otras métricas.
 
 ## Slide 15 · Conclusiones
 
