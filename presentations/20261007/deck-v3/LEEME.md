@@ -33,7 +33,7 @@ Requiere Playwright con Chromium. Si no está en `node_modules`, definir `PLAYWR
 | 5 | 7 | §2, trabajo relacionado (Shi 2023, Xie 2024, Yoran 2024, Cuconasu 2024; Self-RAG/Asai 2023, Speculative RAG/Wang 2024, Liu 2024). |
 | 6 | 8 | §3.1, definición de sufficient context; suficiente ≠ verdadero. |
 | 7 | 9 | §3.2, autorater (no requiere respuesta de referencia). |
-| 8 | 10 | §3.2 · Tabla 1: 93,0 / 87,8 / 87,0 / 82,6 / 80,9 % sobre 115 instancias etiquetadas a mano. |
+| 8 | 10 | §3.2 · Tabla 1: se muestran cuatro métodos (93,0 / 87,8 / 87,0 / 82,6 %) sobre 115 instancias etiquetadas a mano. |
 | 9 | 11 | §4.1 · Figura 2, valores impresos exactos: FreshQA 63,7/77,4/77,4 · HotpotQA 45,4/46,2/46,2 · Musique 33,4/44,6/44,6 (a 2.000/6.000/10.000 tokens). |
 | 10 | 12 | §4.2 · Figuras 3 y 6 (HotpotQA, valores IMPRESOS de la figura 6, p.18): Gemini 67,5/6,5/26,0 y 49,4/16,7/33,8 · GPT-4o 71,9/8,2/19,9 y 59,5/11,5/29,0 · Gemma 64,1/1,7/34,2 y 37,9/11,9/50,2. Claude 3.5 Sonnet se omite por legibilidad (declararlo si preguntan). Abstención sin/con RAG (guion oral): Gemini 100% → 18,6%. |
 | 11 | 13 | §4.3 · Tabla 2: rango 35–62% de aciertos con contexto insuficiente; se muestran los 8 tipos identificados (en el orden del paper). |
